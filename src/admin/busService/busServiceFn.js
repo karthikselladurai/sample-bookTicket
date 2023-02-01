@@ -125,6 +125,5 @@ function createSeats() {
         }
         seats.push(data)
     }
-    // console.log(seats);
     return seats
 }
