@@ -84,14 +84,11 @@ exports.readBusService = async (req, res) => {
                     bookedSeatCount++
                 }
             })
-            // console.log(bookedSeatCount);
             data['bookedSeats'] = bookedSeatCount;
             data['seats'] = 41;
             console.log(data);
             
-            // data = {...data, bookedSeats:bookedSeatCount}
         })
-        // console.log(resp);
         logger.info({ status: "success", message: "Bus Service Read Successfully", data: {} })
         return { status: "success", message: "Bus Service Read Successfully", data: resp }
 
