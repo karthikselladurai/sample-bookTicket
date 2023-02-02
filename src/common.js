@@ -7,12 +7,16 @@ const smsService = require('./../services/notification/twilio')
 
 //users
 const userUpdate = [
-    common.checkUserToken,
+    // common.checkUserToken,
     createUser.updateUser
 ]
 const userBookTk = [
-    common.checkUserToken,
+    // common.checkUserToken,
     bookTk.booking
+]
+const busList = [
+    // common.checkUserToken,
+    bookTk.read
 ]
 //admin
 const adminCbs = [
@@ -39,6 +43,7 @@ const adminDbs = [
 module.exports = {
     //users
     userUpdate,
+    busList,
     userBookTk,
 
     //admin
