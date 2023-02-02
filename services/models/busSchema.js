@@ -6,6 +6,10 @@ const busSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    adminName:{
+        type: String,
+        required: true,
+    },
     busId: {
         type: String,
         required: true,
