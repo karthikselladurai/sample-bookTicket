@@ -4,35 +4,35 @@ const busSchema = new mongoose.Schema({
     _id: String,
     createdBy: {
         type: String,
-        require: true
+        required: true
     },
-    busNumber: {
+    busId: {
         type: String,
-        require: true,
+        required: true,
     },
     from: {
         type: String,
-        require: true
+        required: true
     },
     to: {   
         type: String,
-        require: true
+        required: true
     },
     travelDate: {
         type: String,
-        require: true
+        required: true
     },
-    seats: {
+    dropTime: {
         type: Array,
-        require: true
-    },
-    pickupTime: {
-        type: String,
-        require: true,
+        required: true
     },
     dropTime: {
         type: String,
-        require: true
+        required: true,
+    },
+    dropTime: {
+        type: String,
+        required: true
     }
 }, {
     timestamps: true
