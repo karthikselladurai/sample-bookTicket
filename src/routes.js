@@ -13,6 +13,7 @@ route.post("/createUser",createUser.register);
 
 //user
 route.put('/user/update',ctrl.userUpdate);
+route.get('/user/busList',ctrl.busList);
 route.put('/user/bookTk',ctrl.userBookTk);
 
 //admin

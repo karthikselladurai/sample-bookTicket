@@ -1,7 +1,7 @@
 const logger = require('../../../services/logger');
 const createBusSchema = require('../../../services/models/busSchema');
 const { default: mongoose } = require('mongoose');
-const moment = require('moment')
+    const moment = require('moment');
 
 
 exports.createBusService = async (req, res) => {
@@ -56,7 +56,6 @@ exports.updateBusService = async (req, res) => {
             pickupTime: body.pickupTime,
             dropTime: body.dropTime
         })
-        console.log(resp);
         if (resp === null) {
             logger.error({ status: "unsuccess", message: "Bus Service Not Found", data: {} })
             return { status: "unsuccess", message: "Bus Service Not Found", data: {} }
@@ -72,11 +71,11 @@ exports.updateBusService = async (req, res) => {
 exports.readBusService = async (req, res) => {
     try {
         let resp = await createBusSchema.find();
-        console.log(moment().format('MM:DD:YY:HH:mm:ss'));
+        console.log(moment().format('MM-DD-YY:HH.mm'));
         resp.forEach(data => {
-            // console.log("yes>>>>>>>>>>>>>>>>>>>>>>>>>>>",data.travelDate+data.pickupTime);
-            if(data.travelDate+data.pickupTime <= moment().format('MM:DD:YY:HH:mm:ss')){
-                console.log("yes>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+            console.log(data.travelDate+":"+data.pickupTime>moment().format('MM-DD-YYYY:HH.mm'));
+            if(data.travelDate+":"+data.pickupTime > moment().format('MM-DD-YYYY:HH.mm')){
+               console.log(data)
             }
             let bookedSeatCount = 0
             data.seats.forEach(seat => {
@@ -84,16 +83,13 @@ exports.readBusService = async (req, res) => {
                     bookedSeatCount++
                 }
             })
-            data['bookedSeats'] = bookedSeatCount;
-            data['seats'] = 41;
-            console.log(data);
-            
+            data._doc['bookedSeats'] = bookedSeatCount;
+            data['seats'] = 41;    
         })
         logger.info({ status: "success", message: "Bus Service Read Successfully", data: {} })
         return { status: "success", message: "Bus Service Read Successfully", data: resp }
-
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         logger.error({ status: "unsuccess", message: "Read Bus Api failed", data: err })
         return { status: "unsuccess", message: "Read Bus Api failed", data: err }
     }

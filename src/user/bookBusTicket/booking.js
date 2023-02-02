@@ -9,4 +9,13 @@ exports.booking =  async (req,res)=> {
     }catch(err){
         logger.error({status:"unsuccess",message:err,data:{}});
     }   
-}   
+} 
+exports.read = async (req,res)=>{
+    try{
+        let resp = await bookFn.read(req);
+        res.send(resp);
+    }catch(err){
+        logger.error({status:"unsuccess",message:err,data:{}});
+    }  
+
+}  
