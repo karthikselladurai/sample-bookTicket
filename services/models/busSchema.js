@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const busSchema = new mongoose.Schema({
     _id: String,
-    createdBy: {
+    adminId: {
         type: String,
         required: true
     },
@@ -26,11 +26,11 @@ const busSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    dropTime: {
+    seats: {
         type: Array,
         required: true
     },
-    dropTime: {
+    pickupTime: {
         type: String,
         required: true,
     },

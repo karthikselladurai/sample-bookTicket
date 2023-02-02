@@ -8,7 +8,7 @@ exports.createBusService = async (req, res) => {
     try {
         let body = req.body
         let busData = new createBusSchema({
-            createdBy:body.createdBy,
+            adminId:body.adminId,
             adminName:body.adminName,
             busId: body.busId,
             from: body.from,
