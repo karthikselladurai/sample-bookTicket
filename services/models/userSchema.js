@@ -40,7 +40,11 @@ const userSchema = new mongoose.Schema(
         userPassword: {
             type: String,
             required: true
-        }
+        },tickets: {
+            type: Array,
+            required: true,
+            default:null
+        },
     }, {
     timestamps: true
 }

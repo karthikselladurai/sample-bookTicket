@@ -7,10 +7,9 @@ const { default: mongoose } = require('mongoose');
 exports.createBusService = async (req, res) => {
     try {
         let body = req.body
-        console.log(body.travelDate);
         let busData = new createBusSchema({
             createdBy:body.createdBy,
-            busNumber: body.busNumber,
+            busId: body.busId,
             from: body.from,
             to: body.to,
             travelDate: body.travelDate,
@@ -19,20 +18,21 @@ exports.createBusService = async (req, res) => {
             dropTime: body.dropTime
         })
         busData["_id"] = mongoose.Types.ObjectId().toString();
-        let validationError = busData.validateSync();
-        if (validationError) {
-            console.log("...................", validationError);
-            logger.error({ status: "unsuccess", message: validationError, data: {} })
-            return { status: "unsuccess", message: "invalid parameters", data: {} }
-        }
+        // let validationError = busData.validateSync()
+        // console.log(validationError);
+        // if (validationError) {
+        //     console.log("...................", validationError);
+        //     logger.error({ status: "unsuccess", message: validationError, data: {} })
+        //     return { status: "unsuccess", message: "invalid parameters", data: {} }
+        // }
         // console.log(validationError);
         return await busData.save().then(data => {
             logger.info({ status: "success", message: "Bus service created Register Successfully", data: data })
             return { status: "success", message: "Bus service created Successfully", data: data }
         }).catch(err => {
-            console.log(err);
-            if (err.code === 11000) {
-                return { status: "unsuccess", message: "bus Name Already exit", data: {} }
+            if (err._message) {
+                logger.error({ status: "unsuccess", message: "invalid details bus details", data: err._message })
+                return { status: "unsuccess", message: "invalid details bus details", data: {} }
             }
             logger.error({ status: "unsuccess", message: "create bus service failed", data: err })
             return { status: "unsuccess", message: "create bus service failed", data: err }
@@ -70,7 +70,7 @@ exports.updateBusService = async (req, res) => {
 }
 exports.readBusService = async (req, res) => {
     try {
-        let resp = await createBusSchema.find();
+        let resp = await createBusSchema.find({});
         console.log(moment().format('MM-DD-YY:HH.mm'));
         resp.forEach(data => {
             console.log(data.travelDate+":"+data.pickupTime>moment().format('MM-DD-YYYY:HH.mm'));
