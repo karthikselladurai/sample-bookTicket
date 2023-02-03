@@ -2,37 +2,41 @@ const mongoose = require("mongoose");
 
 const busSchema = new mongoose.Schema({
     _id: String,
-    createdBy: {
+    adminId: {
         type: String,
-        require: true
+        required: true
     },
-    busNumber: {
+    adminName:{
         type: String,
-        require: true,
+        required: true,
+    },
+    busId: {
+        type: String,
+        required: true,
     },
     from: {
         type: String,
-        require: true
+        required: true
     },
     to: {   
         type: String,
-        require: true
+        required: true
     },
     travelDate: {
         type: String,
-        require: true
+        required: true
     },
     seats: {
         type: Array,
-        require: true
+        required: true
     },
     pickupTime: {
         type: String,
-        require: true,
+        required: true,
     },
     dropTime: {
         type: String,
-        require: true
+        required: true
     }
 }, {
     timestamps: true

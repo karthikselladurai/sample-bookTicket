@@ -1,6 +1,7 @@
 const logger = require('../../../services/logger');
 const busSchema = require('../../../services/models/busSchema')
 const moment = require('moment');
+const userFn =  require('./../../createUser/createUserFn')
 let body;
 
 exports.update = async (req, res) => {
@@ -8,7 +9,6 @@ exports.update = async (req, res) => {
         let filter;
         body = req.body
         let updateSeatId = body.seatId
-        console.log(body.busNumber, body.seatId, body.userId);
         // let resp = await busSchema.updateOne({ busNumber: body.busNumber, "seats.seatId": [{ $in: updateSeatId }] }, { $set: { "seats.$.isBooked": "true", "seats.$.userId": body.userId } }, { multi: true });
         // let result = await busSchema.find({ busNumber: body.busNumber });
         // result[0].seats.map(data => {
@@ -25,11 +25,14 @@ exports.update = async (req, res) => {
         //     })
         // })
         // let resp = await busSchema.updateOne({ busNumber: body.busNumber }, { seats: result[0].seats })
-        if(body.booking){
+        console.log(body.booking);
+        if(body.booking === 'true'){
             filter = {"seats.$[element].isBooked" : true,"seats.$[element].userId":body.userId}
+
         }else{
              filter = {"seats.$[element].isBooked" : false,"seats.$[element].userId":null}
-        }        
+        }   
+        console.log(filter);     
         let resp = await busSchema.updateMany(
             {_id: body.busId}, 
             {$set:filter }, 
@@ -37,10 +40,10 @@ exports.update = async (req, res) => {
                 { "element.seatId": { $in:updateSeatId}}
                 ]
             })
-            console.log(resp);
         if (resp.acknowledged && resp.modifiedCount === 1) {
-            logger.info({ status: "success", message: body.booking?"Seat Booked successfully":"Seat Cancelled successfully", data: {} })
-            return { status: "success", message: body.booking?"Seat Booked successfully":"Seat Cancelled successfully", data: {} }
+            userFn.ticketHistoryUpdate(req);
+            logger.info({ status: "success", message: body.booking === 'true'?"Seat Booked successfully":"Seat Cancelled successfully", data: {} })
+            return { status: "success", message: body.booking === 'true'?"Seat Booked successfully":"Seat Cancelled successfully", data: {} }
         } else {
             logger.info({ status: "Unsuccess", message: "seat Updated failed", data: {} })
             return { status: "unsuccess", message: "seat Updated failed", data: {} }
