@@ -30,7 +30,7 @@ const busSchema = new mongoose.Schema({
         type: Array,
         required: true
     },
-    pickupTime: {
+    pickUpTime: {
         type: String,
         required: true,
     },

@@ -112,7 +112,6 @@ exports.ticketHistoryUpdate = async (req) => {
             logger.info({ status: "success", message: "No Bus Service Available", data: {} })
             return { status: "success", message: "No Bus Service Available", data: busDetailsResp.data }
         }
-        console.log(busDetailsResp.data[0].pickupTime);
         if (body.booking == 'true') {
             let ticketDetails = {
                 busId: body.userId,
@@ -132,10 +131,10 @@ exports.ticketHistoryUpdate = async (req) => {
         }
         let resp = await userSchema.updateOne({ _id: body.userId }, filter);
         if (resp.acknowledged && resp.modifiedCount === 1) {
-            logger.info({ status: "Success", message: "Ticket History Updated Successfully", data: {} })
+            logger.info({ status: "Success", message: "Ticket History Updated Successfully", data: {resp} })
             return { status: "Success", message: "Ticket History Updated Successfully", data: {} }
         } else {
-            logger.info({ status: "Success", message: "Ticket History Updated Failed", data: {} })
+            logger.info({ status: "Success", message: "Ticket History Updated Failed", data: {resp} })
             return { status: "Success", message: "Ticket History Updated Failed", data: {} }
         }
 
