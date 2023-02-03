@@ -41,10 +41,8 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: true
         },tickets: {
-            type: Array,
-            required: true,
-            default:null
-        },
+            type: Array
+        }
     }, {
     timestamps: true
 }

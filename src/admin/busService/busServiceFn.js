@@ -1,15 +1,16 @@
 const logger = require('../../../services/logger');
 const createBusSchema = require('../../../services/models/busSchema');
 const { default: mongoose } = require('mongoose');
-    const moment = require('moment');
+const moment = require('moment');
+let body;
 
 
 exports.createBusService = async (req, res) => {
     try {
-        let body = req.body
+        body = req.body
         let busData = new createBusSchema({
-            adminId:body.adminId,
-            adminName:body.adminName,
+            adminId: body.adminId,
+            adminName: body.adminName,
             busId: body.busId,
             from: body.from,
             to: body.to,
@@ -46,7 +47,7 @@ exports.createBusService = async (req, res) => {
 }
 exports.updateBusService = async (req, res) => {
     try {
-        let body = req.body
+        body = req.body
         let resp = await createBusSchema.findByIdAndUpdate(body._Id, {
             adminId: body.adminId,
             busNumber: body.busNumber,
@@ -74,9 +75,9 @@ exports.readBusService = async (req, res) => {
         let resp = await createBusSchema.find({});
         console.log(moment().format('MM-DD-YY:HH.mm'));
         resp.forEach(data => {
-            console.log(data.travelDate+":"+data.pickupTime>moment().format('MM-DD-YYYY:HH.mm'));
-            if(data.travelDate+":"+data.pickupTime > moment().format('MM-DD-YYYY:HH.mm')){
-               console.log(data)
+            console.log(data.travelDate + ":" + data.pickupTime > moment().format('MM-DD-YYYY:HH.mm'));
+            if (data.travelDate + ":" + data.pickupTime > moment().format('MM-DD-YYYY:HH.mm')) {
+                console.log(data)
             }
             let bookedSeatCount = 0
             data.seats.forEach(seat => {
@@ -85,8 +86,39 @@ exports.readBusService = async (req, res) => {
                 }
             })
             data._doc['bookedSeats'] = bookedSeatCount;
-            data['seats'] = 41;    
+            data['seats'] = 41;
         })
+        logger.info({ status: "success", message: "Bus Service Read Successfully", data: {} })
+        return { status: "success", message: "Bus Service Read Successfully", data: resp }
+    } catch (err) {
+        // console.log(err);
+        logger.error({ status: "unsuccess", message: "Read Bus Api failed", data: err })
+        return { status: "unsuccess", message: "Read Bus Api failed", data: err }
+    }
+}
+exports.readBusServiceById = async (req) => {
+    try {
+        body = req.body
+        let resp = await createBusSchema.find({ _id: body.busId });
+        // console.log(moment().format('MM-DD-YY:HH.mm'));
+        // resp.forEach(data => {
+        //     console.log(data.travelDate+":"+data.pickupTime>moment().format('MM-DD-YYYY:HH.mm'));
+        //     if(data.travelDate+":"+data.pickupTime > moment().format('MM-DD-YYYY:HH.mm')){
+        //        console.log(data)
+        //     }
+        //     let bookedSeatCount = 0
+        //     data.seats.forEach(seat => {
+        //         if (seat.isBooked) {
+        //             bookedSeatCount++
+        //         }
+        //     })
+        //     data._doc['bookedSeats'] = bookedSeatCount;
+        //     data['seats'] = 41;    
+        // })
+        if (resp.length <= 0) {
+            logger.info({ status: "success", message: "No Bus Service Available", data: {} })
+            return { status: "success", message: "No Bus Service Available", data: resp }
+        }
         logger.info({ status: "success", message: "Bus Service Read Successfully", data: {} })
         return { status: "success", message: "Bus Service Read Successfully", data: resp }
     } catch (err) {
@@ -97,7 +129,7 @@ exports.readBusService = async (req, res) => {
 }
 exports.deleteBusService = async (req, res) => {
     try {
-        let body = req.body
+        body = req.body
         let resp = await createBusSchema.deleteOne({ busNumber: body.busNumber })
         console.log(resp);
         if (resp.deletedCount === 0) {
