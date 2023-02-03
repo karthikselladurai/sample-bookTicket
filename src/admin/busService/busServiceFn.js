@@ -16,7 +16,7 @@ exports.createBusService = async (req, res) => {
             to: body.to,
             travelDate: body.travelDate,
             seats: createSeats(),
-            pickupTime: body.pickupTime,
+            pickUpTime: body.pickUpTime,
             dropTime: body.dropTime
         })
         busData["_id"] = mongoose.Types.ObjectId().toString();
@@ -55,7 +55,7 @@ exports.updateBusService = async (req, res) => {
             to: body.to,
             travelDate: body.travelDate,
             seats: createSeats(),
-            pickupTime: body.pickupTime,
+            pickUpTime: body.pickUpTime,
             dropTime: body.dropTime
         })
         if (resp === null) {
